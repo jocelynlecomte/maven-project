@@ -1,3 +1,4 @@
 target
 *.iml
 *.pdf
+src/main/groovy/pipeline.gdsl
