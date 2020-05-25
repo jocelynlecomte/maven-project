@@ -1,19 +1,24 @@
 pipeline {
     agent any
+    tools {
+        maven 'Default'
+    }
     stages {
-        stage('init') {
+        stage('Build') {
             steps {
-                echo("Testing...")
+                echo 'Building...'
+                sh 'mvn clean package'
+            }
+            post {
+                success {
+                    echo 'Archiving...'
+                    archiveArtifacts artifacts: '**/target/*.war'
+                }
             }
         }
-        stage('build') {
+        stage('Deploy to staging') {
             steps {
-                echo("Building...")
-            }
-        }
-        stage('deploy') {
-            steps {
-                echo("Deploying...")
+                build job: 'maven-project-deploy-to-staging'
             }
         }
     }
